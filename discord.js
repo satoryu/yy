@@ -1,4 +1,4 @@
-const { BrowserWindow } = require('electron')
+const { BrowserWindow, ipcMain } = require('electron')
 const config = require('./config/discord')
 const path = require('path')
 
@@ -45,5 +45,18 @@ function createChanelSelectWindow() {
 
   win.loadFile('./chanel_select.html')
 }
+
+const axios = require('axios').default
+
+ipcMain.on('get-guilds', async function(event) {
+  const response = await axios.get('https://discord.com/api/users/@me/guilds',
+    {
+      headers: {
+        'Authorization': `Bearer ${access_token}`
+      }
+    })
+  event.returnValue = response.data
+  return
+})
 
 module.exports = { getAuthorizeURL, createAuthenticationWindow }
