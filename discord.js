@@ -27,6 +27,8 @@ function createAuthenticationWindow() {
               return results
             }, {})
 
+    console.log(parameters['expires_in'])
+
     access_token = parameters['access_token']
     createChanelSelectWindow()
 
@@ -57,6 +59,22 @@ ipcMain.on('get-guilds', async function(event) {
     })
   event.returnValue = response.data
   return
+})
+
+ipcMain.on('get-channels', async function(event, args) {
+  try {
+    const response = await axios.get(`https://discord.com/api/guilds/${args.guild_id}/channels`,
+      {
+        headers: {
+          'Authorization': `Bearer ${access_token}`
+        }
+      })
+    event.returnValue = response.data
+    return
+  } catch(err) {
+    console.error(err)
+    return
+  }
 })
 
 module.exports = { getAuthorizeURL, createAuthenticationWindow }

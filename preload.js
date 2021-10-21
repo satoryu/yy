@@ -4,4 +4,8 @@ function getGuilds() {
   return ipcRenderer.sendSync('get-guilds')
 }
 
-contextBridge.exposeInMainWorld('discord', { getGuilds })
+function getChannels(guild_id) {
+  return ipcRenderer.sendSync('get-channels', { guild_id: guild_id })
+}
+
+contextBridge.exposeInMainWorld('discord', { getGuilds, getChannels })

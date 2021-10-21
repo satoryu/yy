@@ -6,11 +6,21 @@
   <script type="text/javascript">
     window.addEventListener('DOMContentLoaded', function () {
       const selectGuild = document.getElementById('select-guild')
+      const selectChannel = document.getElementById('select-channel')
       window.discord.getGuilds().forEach(guild => {
         let option = document.createElement('option')
         option.value = guild.id.toString()
         option.text = guild.name
         selectGuild.append(option)
+      })
+      selectGuild.addEventListener('input', function(event) {
+        const guild_id = event.target.value
+        selectChannel.textContent = ''
+        window.discord.getChannels(guild_id).forEach(channel => {
+          let option = document.createElement('option')
+          option.value = channel.id
+          option.text = channel.name
+        })
       })
     })
   </script>
@@ -19,7 +29,7 @@
 <body>
   <form id="chanel-select-form">
     <select id="select-guild"></select>
-    <select id="select-chanel"></select>
+    <select id="select-channel"></select>
 
     <input type="submit" name="submit">
   </form>
